@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expense_app/transaction.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,6 +27,9 @@ class MyHomePage extends StatelessWidget {
         id: 't3', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
   ];
 
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +37,6 @@ class MyHomePage extends StatelessWidget {
           title: Text('Flutter App'),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
@@ -42,6 +45,33 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.amberAccent,
                 child: Text('CHART!'),
                 elevation: 5,
+              ),
+            ),
+            Card(
+              elevation: 5,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(labelText: "Title"),
+                      controller: titleController,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Amount'),
+                      controller: amountController,
+                    ),
+                    FlatButton(
+                        onPressed: () {
+                          print(titleController.text);
+                        },
+                        child: Text(
+                          "Add Transaction",
+                          style: TextStyle(color: Colors.pink),
+                        ))
+                  ],
+                ),
               ),
             ),
             Column(
@@ -53,12 +83,27 @@ class MyHomePage extends StatelessWidget {
                         margin:
                             EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                         decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 2)),
+                            border: Border.all(color: Colors.purple, width: 2)),
                         padding: EdgeInsets.all(10),
-                        child: Text(e.amount.toString()),
+                        child: Text(
+                          '\$${e.amount}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.purple),
+                        ),
                       ),
                       Column(
-                        children: [Text(e.title), Text(e.date.toString())],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e.title,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text(DateFormat('dd-MM-yyyy').format(e.date),
+                              style: TextStyle(color: Colors.grey))
+                        ],
                       )
                     ],
                   ),
