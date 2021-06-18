@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
           title:
               TextStyle(fontFamily: "QuickSand", fontWeight: FontWeight.bold),
+          button: TextStyle(color: Colors.white),
         ),
       ),
     );
@@ -37,15 +38,15 @@ class _MyHomePageState extends State<MyHomePage> {
   final amountController = TextEditingController();
 
   final List<Transaction> _userTransactions = [
-    // Transaction(
-    //     id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
-    // Transaction(
-    //     id: 't2',
-    //     title: 'Weekly Groceries',
-    //     amount: 16.53,
-    //     date: DateTime.now()),
-    // Transaction(
-    //     id: 't3', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
+    Transaction(
+        id: 't1', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
+    Transaction(
+        id: 't2',
+        title: 'Weekly Groceries',
+        amount: 16.53,
+        date: DateTime.now()),
+    Transaction(
+        id: 't3', title: 'New Shoes', amount: 69.99, date: DateTime.now()),
   ];
 
   List<Transaction> get _recentTransactions {
@@ -58,15 +59,23 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime chosenDate) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: title,
-        date: DateTime.now(),
+        date: chosenDate,
         amount: amount);
 
     setState(() {
       _userTransactions.add(newTransaction);
+    });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) {
+        return element.id == id;
+      });
     });
   }
 
@@ -99,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransactions),
-            TransactionList(_userTransactions)
+            TransactionList(_userTransactions, _deleteTransaction)
           ],
         ),
       ),
